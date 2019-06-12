@@ -1,0 +1,70 @@
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF1F /1024 [g]
+
+Y axis : 0x0195 /1024 [g]
+
+X axis : 0xFC8F /1024 [g]
+
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF22 /1024 [g]
+
+Y axis : 0x018E /1024 [g]
+
+X axis : 0xFC93 /1024 [g]
+
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF24 /1024 [g]
+
+Y axis : 0x018F /1024 [g]
+
+X axis : 0xFC92 /1024 [g]
+
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF23 /1024 [g]
+
+Y axis : 0x0190 /1024 [g]
+
+X axis : 0xFC93 /1024 [g]
+
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF21 /1024 [g]
+
+Y axis : 0x0190 /1024 [g]
+
+X axis : 0xFC91 /1024 [g]
+
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF22 /1024 [g]
+
+Y axis : 0x0191 /1024 [g]
+
+X axis : 0xFC94 /1024 [g]
+
+Source NW Addr : 0001
+
+Data:MMA8652(2g: Int2,Float10) 
+
+X axis : 0xFF23 /1024 [g]
+
+Y axis : 0x0190 /1024 [g]
+
+X axis : 0xFC90 /1024 [g]
+
