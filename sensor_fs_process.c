@@ -71,7 +71,6 @@ int main(void) {
             printf("%s file not open!\n", fname);
             return -1;
           } else {
-            //printf("%s file opened!\n", fname);
             change.count++;
           }
 
