@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <dirent.h>
 
 typedef struct Change {
   int x_change;
@@ -14,28 +15,24 @@ int process_fs(type_change change);
 long hexToDec(char *source);
 int getIndexOfSigns(char ch);
 void print_msg(type_change change, char cmd[]);
+// void my_ls(char *all_dir[]);
 
 /* char -> value */
-int getIndexOfSigns(char ch)
-{
-    if(ch >= '0' && ch <= '9')
-    {
+int getIndexOfSigns(char ch) {
+    if(ch >= '0' && ch <= '9') {
         return ch - '0';
     }
-    if(ch >= 'A' && ch <='F')
-    {
+    if(ch >= 'A' && ch <='F') {
         return ch - 'A' + 10;
     }
-    if(ch >= 'a' && ch <= 'f')
-    {
+    if(ch >= 'a' && ch <= 'f') {
         return ch - 'a' + 10;
     }
-return -1;
+    return -1;
 }
 
 /* 16->10 */
-long hexToDec(char *source)
-{
+long hexToDec(char *source) {
     long sum = 0;
     long t = 1;
     int i, len;
@@ -51,7 +48,7 @@ long hexToDec(char *source)
 }
 
 
-int main(void) {
+int main(int argc, const char *argv[]) {
     FILE *fp;
     type_change change = {0, 0, 0, 0};
 
@@ -95,8 +92,7 @@ int main(void) {
                   i++;
                   if (i==4){
                       //the fourth word is data
-                      //printf("%s\n", result);
-                      //printf("!!!!!%ld\n",hexToDec(result+2));
+                      //printf("%s\n", result); printf("!!!!!%ld\n",hexToDec(result+2));
                       xyz_count ++;
                       temp[xyz_count] = (int)hexToDec(result+2);
                   }
@@ -128,8 +124,24 @@ void print_msg (type_change change, char cmd[]) {
 }
 
 int process_fs(type_change change) {
+    /* ここから、current directry の情報を拾ってくるのに必要 */
+    char *path = "./";
+    DIR *dir;
+    struct dirent *dent;
+    char all_dir[8][256];
+    dir = opendir(path);
+
+    int i = 0;
+    while ((dent = readdir(dir)) != NULL) {
+        if(i < 8) strcpy(all_dir[i], dent->d_name);
+        i++;
+    }
+
+    closedir(dir);
+    /* ここまで */
+
     char cmd[256];
-    int thr = 30000;// 閾値
+    int thr = 30000; // 閾値
 
     int x_c = change.x_change;
     int y_c = change.y_change;
@@ -157,6 +169,12 @@ int process_fs(type_change change) {
         // x,y,zが閾値を超えている
         strcpy(cmd, "x, y, z");
     } else {
+        // system("ls");
+        // my_ls(&all_dir);
+        for(int j = 0; j < 8 ; j++) {
+            printf("\x1b[41m%d\x1b[m %s    ", j, all_dir[j]);
+            if(j == 3 || j == 7) printf("\n");
+        }
         strcpy(cmd, "なんも変化がない");
     }
 
@@ -164,3 +182,13 @@ int process_fs(type_change change) {
 
     return 0;
 }
+
+/* lsの関数化はまだしていない
+void my_ls(char *all_dir[]) {
+  for(int i = 0; i < 8 ; i++) {
+      printf("\x1b[41m%d\x1b[m %s    ", i, all_dir[i]);
+      if(i == 3 || i == 7) printf("\n");
+  }
+  return;
+}
+*/
