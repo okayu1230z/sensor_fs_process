@@ -4,22 +4,26 @@
 #include <unistd.h>
 #include <dirent.h>
 
-typedef struct Change {
-  int x_change;
-  int y_change;
-  int z_change;
-  int s_change;
+typedef struct Information {
+  int x;
+  int y;
+  int z;
+  int b;
+  int cmd_num;
+  int arg1;
+  int arg2;
   int count;
-} type_change;
+} info_struct;
 
-int process_fs(type_change change);
+int process_fs(info_struct);
 long hexToDec(char *source);
 int getIndexOfSigns(char ch);
-void print_msg(type_change change, char cmd[]);
-// void my_ls(char *all_dir[]);
+void print_msg(info_struct change, char cmd[]);
+void my_ls(char all_dir[8][256]);
 
-/* char -> value */
-int getIndexOfSigns(char ch) {
+    /* char -> value */
+    int getIndexOfSigns(char ch)
+{
     if(ch >= '0' && ch <= '9') {
         return ch - '0';
     }
@@ -39,7 +43,7 @@ long hexToDec(char *source) {
     int i, len;
 
     len = strlen(source);
-    for(i=len-1; i>=0; i--)
+    for(i = len-1; i >= 0; i--)
     {
         sum += t * getIndexOfSigns(*(source + i));
         t *= 16;
@@ -51,92 +55,85 @@ long hexToDec(char *source) {
 
 int main(int argc, const char *argv[]) {
     FILE *fp;
-    type_change change = {0, 0, 0, 0};
+    info_struct info = {0, 0, 0, 0, -1, 0, 0, 0};
 
-    char fname[] = "teraterm_cordinator.log";
+    char fname[] = "teraterm.log";
     int flag = 1;
-    double interval = 1.0;
+    double interval = 5.0;
     char a[20];
 
-    int x_old = 0;
-    int y_old = 0;
-    int z_old = 0;
-    int s_old = 0;
     while(flag) {
         //read file
-        fp = fopen(fname, "r");
+        fp = fopen("teraterm.log", "r");
         if(fp == NULL) {
             printf("%s file not open!\n", fname);
             return -1;
-          } else {
-            change.count++;
-          }
+        } else {
+            info.count++;
+        }
 
-          //change position of file pointer
-          fseek(fp, -100L, SEEK_END);
+        //change position of file pointer
+        fseek(fp, -100L, SEEK_END);
 
-          char t []=" ";
-          char *result = NULL;
-          int i;// count line
-          int xyz_count = 0;
-          int temp[4];
+        char t []=" ";
+        char *result = NULL;
+        int i; // count line
+        int xyz_count = 0;
+        int temp[4];
 
-          while (fgets(a, 60, fp) != NULL)
-          {
-              //read each line
-              //puts(a);
-              //split each word
-              result = NULL;
-              if (strchr(a, '0') != NULL)
-              {
-                  result = strtok(a, t);
-                  i = 0;
+        while (fgets(a, 60, fp) != NULL)
+        {
+            //split each word
+            result = NULL;
+            if (strchr(a, '0') != NULL)
+            {
+                result = strtok(a, t);
+                i = 0;
                   while (result != NULL)
                   {
                       if (strchr(a, 's') != NULL)
                       {
-                          //printf("", );
+                          //temp[4] = result;
                           temp[4] = (int)hexToDec(result + 11);
                       }
                       i++;
                       if (i == 4 && xyz_count < 3)
                       {
                           //the fourth word is data
-                          //printf("%s\n", result); printf("!!!!!%ld\n",hexToDec(result+2));
                           xyz_count++;
                           //printf("%d \n", temp[xyz_count]);
                           temp[xyz_count] = (int)hexToDec(result + 2);
-                          printf("%d \n", temp[xyz_count]);
                       }
-                      result = strtok(NULL, t);
-                      //printf("%d",i);
-                  }
-              }
-      }
-      change.x_change = temp[1] - x_old; x_old = temp[1];
-      change.y_change = temp[2] - y_old; y_old = temp[2];
-      change.z_change = temp[3] - z_old; z_old = temp[3];
-      change.s_change = temp[4] - s_old; s_old = temp[4];
-      process_fs(change);
+                    result = strtok(NULL, t);
+                }
+            }
+        }
 
-      fclose(fp);
-      sleep(interval);
-   }
+        info.x = temp[1];
+        info.y = temp[2];
+        info.z = temp[3];
+        info.b = temp[4];
 
-   return 0;
+        process_fs(info);
+
+        fclose(fp);
+
+        sleep(interval);
+    }
+    return 0;
 }
 
-void print_msg (type_change change, char cmd[]) {
-    printf("COUNT : %d \n", change.count);
-    printf("X_CHANGE : %d \n", change.x_change);
-    printf("Y_CHANGE : %d \n", change.y_change);
-    printf("Z_CHANGE : %d \n", change.z_change);
-    printf("COMMAND : %s \n", cmd);
+void print_msg (info_struct info, char cmd[]) {
+    printf("COUNT : %d \n", info.count);
+    printf("X : %d \n", info.x);
+    printf("Y : %d \n", info.y);
+    printf("Z : %d \n", info.z);
+    printf("B : %d \n", info.b);
+    printf("C : %s \n", cmd);
     printf("\n");
 }
 
-int process_fs(type_change change) {
-    /* ここから、current directry の情報を拾ってくるのに必要 */
+int process_fs(info_struct info) {
     char *path = "./";
     DIR *dir;
     struct dirent *dent;
@@ -145,31 +142,44 @@ int process_fs(type_change change) {
 
     int i = 0;
     while ((dent = readdir(dir)) != NULL) {
-        if(i < 8) strcpy(all_dir[i], dent->d_name);
-        i++;
+        if (strcmp(dent->d_name,"."))
+        {
+            if (i < 8) strcpy(all_dir[i], dent->d_name);
+            i++;
+        }
     }
 
     closedir(dir);
-    /* ここまで */
 
     char cmd[256];
     int thr = 30000; // 閾値
 
-    int x_c = change.x_change;
-    int y_c = change.y_change;
-    int z_c = change.z_change;
+    int x_c = info.x;
+    int y_c = info.y;
+    int z_c = info.z;
+    int b_c = info.b;
+
+    if(b_c == 8) {
+        info.cmd_num = -1;
+        info.arg1 = 0;
+        info.arg2 = 0;
+        return 0;
+    }
 
     if(x_c > thr && y_c < thr && z_c < thr) {
-        // xだけが閾値を超えている
+        // 1 - 0 - 0
         strcpy(cmd, "x");
+        info.cmd_num = 1;
     } else if(x_c < thr && y_c > thr && z_c < thr) {
-        // yだけ
+        // 0 - 1 - 0
         strcpy(cmd, "y");
+        info.cmd_num = 2;
     } else if(x_c < thr && y_c < thr && z_c > thr) {
-        // zだけ
+        // 0 - 0 - 1
         strcpy(cmd, "z");
+
     } else if(x_c > thr && y_c > thr && z_c < thr) {
-        // xとyが閾値を超えている
+        // 1 - 1 - 1
         strcpy(cmd, "x, y");
     } else if(x_c < thr && y_c > thr && z_c > thr) {
         // yとz
@@ -181,26 +191,37 @@ int process_fs(type_change change) {
         // x,y,zが閾値を超えている
         strcpy(cmd, "x, y, z");
     } else {
-        // system("ls");
-        // my_ls(&all_dir);
+        //my_ls(all_dir);
+        /*
         for(int j = 0; j < 8 ; j++) {
             printf("\x1b[41m%d\x1b[m %s    ", j, all_dir[j]);
             if(j == 3 || j == 7) printf("\n");
         }
+        */
         strcpy(cmd, "なんも変化がない");
     }
 
-    print_msg(change, cmd);
+    if() {
+
+    }
+
+    print_msg(info, cmd);
+    my_ls(all_dir);
 
     return 0;
 }
 
-/* lsの関数化はまだしていない
-void my_ls(char *all_dir[]) {
-  for(int i = 0; i < 8 ; i++) {
+void my_ls(char all_dir[8][256])
+{
+  for(int i = 0; i < 8 ; i++)
+  {
       printf("\x1b[41m%d\x1b[m %s    ", i, all_dir[i]);
       if(i == 3 || i == 7) printf("\n");
   }
   return;
 }
-*/
+
+void my_mkdir()
+{
+
+}
