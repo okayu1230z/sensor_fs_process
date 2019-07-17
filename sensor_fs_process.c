@@ -15,7 +15,7 @@ int process_fs(type_change change);
 long hexToDec(char *source);
 int getIndexOfSigns(char ch);
 void print_msg(type_change change, char cmd[]);
-// void my_ls(char *all_dir[]);
+void my_ls(char *all_dir[]);
 
 /* char -> value */
 int getIndexOfSigns(char ch) {
@@ -38,8 +38,7 @@ long hexToDec(char *source) {
     int i, len;
 
     len = strlen(source);
-    for(i=len-1; i>=0; i--)
-    {
+    for(i=len-1; i>=0; i--) {
         sum += t * getIndexOfSigns(*(source + i));
         t *= 16;
     }
@@ -51,8 +50,9 @@ long hexToDec(char *source) {
 int main(int argc, const char *argv[]) {
     FILE *fp;
     type_change change = {0, 0, 0, 0};
-
-    char fname[] = "teraterm_cordinator.log";
+    char fname[] = "teraterm_end-device.log";
+    //char fname[] = "teraterm.log";
+    //char fname[] = "teraterm.log";
     int flag = 1;
     double interval = 1.0;
     char a[20];
@@ -67,43 +67,52 @@ int main(int argc, const char *argv[]) {
         if(fp == NULL) {
             printf("%s file not open!\n", fname);
             return -1;
-          } else {
+        } else {
             change.count++;
-          }
+        }
 
-          //change position of file pointer
-          fseek(fp, -84L, SEEK_END);
+        //change position of file pointer
+        fseek(fp, -84L, SEEK_END);
 
-          char t []=" ";
-          char *result = NULL;
-          int i;// count line
-          int xyz_count = 0;
-          int temp[3];
+        char t []=" ";
+        char *result = NULL;
+        int i;// count line
+        int xyz_count = 0;
+        int temp[3];
 
-          while (fscanf(fp, "%[^\n]%*c", a) != EOF) {
-            //read each line
-            //puts(a);
-            //split each word
-            result=NULL;
-            if(strchr(a,'0')!=NULL) {
-              result = strtok(a, t);
-              i=0;
-              while(result!=NULL){
-                  i++;
-                  if (i==4){
-                      //the fourth word is data
-                      //printf("%s\n", result); printf("!!!!!%ld\n",hexToDec(result+2));
-                      xyz_count ++;
-                      temp[xyz_count] = (int)hexToDec(result+2);
-                  }
-                  result = strtok(NULL,t);
-                  //printf("%d",i);
-              }
-          }
+        while (fscanf(fp, "%[^\n]%*c", a) != EOF) {
+          //read each line
+          //puts(a);
+          //split each word
+          result=NULL;
+          if(strchr(a,'0')!=NULL) {
+            result = strtok(a, t);
+            //printf("%ld", strlen(result));
+            //puts(result);
+            i = 0;
+            while(result!=NULL){
+              i++;
+                //printf("%d\n", i);
+                if (i==3 || i==4) {
+                    //puts(result);
+                    //the fourth word is data
+                    //printf("%s\n", result); printf("!!!!!%ld\n",hexToDec(result+2));
+                    xyz_count ++;
+                  temp[xyz_count] = (int)hexToDec(result+2);
+                }
+                puts(result);
+                //printf("%s :%ld  ", result,strlen(result));
+                result = strtok(NULL,t);
+                //printf("%d",i);
+            }
+         }
       }
+
       change.x_change = temp[1] - x_old; x_old = temp[1];
       change.y_change = temp[2] - y_old; y_old = temp[2];
       change.z_change = temp[3] - z_old; z_old = temp[3];
+
+      printf("here");
 
       process_fs(change);
 
@@ -124,6 +133,7 @@ void print_msg (type_change change, char cmd[]) {
 }
 
 int process_fs(type_change change) {
+    printf("here");
     /* ここから、current directry の情報を拾ってくるのに必要 */
     char *path = "./";
     DIR *dir;
@@ -140,6 +150,8 @@ int process_fs(type_change change) {
     closedir(dir);
     /* ここまで */
 
+    printf("here");
+
     char cmd[256];
     int thr = 30000; // 閾値
 
@@ -149,7 +161,8 @@ int process_fs(type_change change) {
 
     if(x_c > thr && y_c < thr && z_c < thr) {
         // xだけが閾値を超えている
-        strcpy(cmd, "x");
+        my_cd(all_dir[0]);
+        strcpy(cmd, "cd");
     } else if(x_c < thr && y_c > thr && z_c < thr) {
         // yだけ
         strcpy(cmd, "y");
@@ -169,12 +182,14 @@ int process_fs(type_change change) {
         // x,y,zが閾値を超えている
         strcpy(cmd, "x, y, z");
     } else {
-        // system("ls");
-        // my_ls(&all_dir);
+        //system("ls");
+        my_ls(all_dir[0]);
+        /*
         for(int j = 0; j < 8 ; j++) {
             printf("\x1b[41m%d\x1b[m %s    ", j, all_dir[j]);
             if(j == 3 || j == 7) printf("\n");
         }
+        */
         strcpy(cmd, "なんも変化がない");
     }
 
@@ -183,12 +198,23 @@ int process_fs(type_change change) {
     return 0;
 }
 
-/* lsの関数化はまだしていない
 void my_ls(char *all_dir[]) {
-  for(int i = 0; i < 8 ; i++) {
-      printf("\x1b[41m%d\x1b[m %s    ", i, all_dir[i]);
-      if(i == 3 || i == 7) printf("\n");
-  }
-  return;
+    for(int i = 0; i < 8 ; i++) {
+        printf("\x1b[41m%d\x1b[m %s    ", i, all_dir[i]);
+        if(i == 3 || i == 7) printf("\n");
+    }
+    return;
 }
-*/
+
+void my_cd(char *all_dir[]) {
+    FILE fp*;
+    char fname[] = "teraterm_button.log";
+
+    fp = fopen(fname, "r");
+    if(fp == NULL) {
+        printf("%s file not open!\n", fname);
+        return -1;
+    }
+
+
+}
