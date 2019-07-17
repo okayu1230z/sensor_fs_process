@@ -1,0 +1,117 @@
+MyWirelessApp Demo Beacon Coordinator application is initialized and ready.
+Initiating the Energy Detection Scan
+Sending the MLME-Scan Request message to the MAC...Done
+Received the MLME-Scan Confirm message from the MAC
+ED scan returned the following results:
+  [60 28 4E 48 5E 68 50 60 4A 80 68 78 58 8A 7C B8 ]
+  Based on the ED scan the logical channel 0x0C was selected
+  Starting as PAN coordinator on channel 0x0C
+  Sending the MLME-Start Request message to the MAC...Done
+  Started the coordinator with PAN ID 0xBEEF, and short address 0xCAFE.
+  Ready to send and receive data over the UART.
+  Received an MLME-Associate Indication from the MAC
+  Sending the MLME-Associate Response message to the MAC...Done
+  Received an MLME-Comm-Status Indication from the MAC - status = 00
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0xFF18 /1024 [g]
+  Y axis : 0xFE11 /1024 [g]
+  X axis : 0x0380 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x001A /1024 [g]
+  Y axis : 0xFE1F /1024 [g]
+  X axis : 0x02AC /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x00A7 /1024 [g]
+  Y axis : 0xFFBA /1024 [g]
+  X axis : 0xFC2F /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002C /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002C /1024 [g]
+  Y axis : 0x0012 /1024 [g]
+  X axis : 0xFC28 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002B /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC28 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002A /1024 [g]
+  Y axis : 0x0010 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002D /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC2A /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002C /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002B /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002B /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002B /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC2A /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002D /1024 [g]
+  Y axis : 0x0010 /1024 [g]
+  X axis : 0xFC27 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002B /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002A /1024 [g]
+  Y axis : 0x000F /1024 [g]
+  X axis : 0xFC2B /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002B /1024 [g]
+  Y axis : 0x0011 /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  Source NW Addr : 0001
+  Data:MMA8652(2g: Int2,Float10)
+  X axis : 0x002C /1024 [g]
+  Y axis : 0x000F /1024 [g]
+  X axis : 0xFC29 /1024 [g]
+  switch : 0x007F
+  
