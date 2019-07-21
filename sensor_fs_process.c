@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -135,16 +134,6 @@ int main(int argc, const char *argv[])
 	    }
 	}
 
-      printf("temp[1] %d\n", temp[1]);
-      printf("temp[2] %d\n", temp[2]);
-      printf("temp[3] %d\n", temp[3]);
-      printf("temp[4] %d\n", temp[4]);
-
-      info.x = temp[1];
-      info.y = temp[2];
-      info.z = temp[3];
-      info.b = temp[4];
-
       process_fs(info);
 
       fclose(fp);
@@ -168,10 +157,12 @@ void print_msg(char cmd[])
 
 void print_debug()
 {
-  printf("\n------------------------------------------------ \n");
+  printf("\n");
+  printf("------------------------------------------------ \n");
+  printf(" info.b %d\n", info.b);
   printf(" info.cmd_num : %d \n", info.cmd_num);
   printf(" info.arg1 : %d \n", info.arg1);
-  printf(" info.arg2 : %d \n", info.arg2);
+  // printf(" info.arg2 : %d \n", info.arg2);
 }
 
 int process_fs()
