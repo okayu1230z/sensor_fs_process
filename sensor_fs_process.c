@@ -71,7 +71,6 @@ long hexToDec(char *source)
 int main(int argc, const char *argv[])
 {
   FILE *fp;
-  //info_struct info = {0, 0, 0, 0, -1, -1, -1, "./", 0};
 
   char fname[] = "teraterm.log";
   int flag = 1;
